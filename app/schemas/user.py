@@ -1,7 +1,23 @@
-from pydantic import BaseModel
+from typing import Optional
+from pydantic import BaseModel, Field, EmailStr
 
 
-class User(BaseModel):
+class UserBase(BaseModel):
+    name: str = Field(min_length=1)
+    email: EmailStr
+
+
+class UserCreate(UserBase):
     id: int
-    name: str = "John Doe"
-    email: str = "jd@email.com"
+
+
+class UserUpdate(BaseModel):
+    name: str = Field(None, min_length=1)
+    email: Optional[EmailStr]
+
+
+class UserResponse(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
