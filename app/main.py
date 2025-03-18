@@ -1,11 +1,15 @@
 from fastapi import FastAPI
-from app.schemas import Expense, User
+from app.routes import users, expenses
 
 app = FastAPI(
     title="Expense Tracker API",
     description="An exercise for learning FastAPI and PostgreSQL",
     version="0.1.0",
 )
+
+
+app.include_router(users.router)
+app.include_router(expenses.router)
 
 
 @app.get("/")
