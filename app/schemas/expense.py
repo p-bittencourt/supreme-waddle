@@ -39,7 +39,7 @@ class ExpenseCreate(ExpenseBase):
 class ExpenseUpdate(BaseModel):
     """Used when updating an expense (all fields optional)"""
 
-    title: Optional[str] = Field(None, max_length=1)
+    title: Optional[str] = Field(None, min_length=1)
     category: Optional[ExpenseCategory] = None
     value: Optional[float] = Field(None, gt=0)
 
@@ -51,4 +51,4 @@ class ExpenseResponse(ExpenseBase):
     user_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True

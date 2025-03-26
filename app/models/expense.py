@@ -1,16 +1,25 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Enum
+from typing import TYPE_CHECKING, get_args
+from sqlalchemy import ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from app.schemas.expense import ExpenseCategory
 from app.db.database import Base
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class Expense(Base):
     __tablename__ = "expenses"
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False)
-    category = Column(Enum(ExpenseCategory), nullable=False)
-    value = Column(Float, nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    title: Mapped[str] = mapped_column(nullable=False)
+    category: Mapped[ExpenseCategory] = mapped_column(
+        Enum(ExpenseCategory, name="expensecategory"),
+        nullable=False,
+    )
+    value: Mapped[float] = mapped_column(nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
-    user = relationship("User", back_populates="expenses")
+    user: Mapped["User"] = relationship(back_populates="expenses")
