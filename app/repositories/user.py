@@ -13,7 +13,7 @@ from app.models.expense import Expense
 
 
 def retrieve_users() -> List[User]:
-    """Retrieve all users from the db"""
+    """Retrieves all users from the db"""
     with Session(engine) as session:
         try:
             users = session.scalars(select(User)).all()
@@ -28,7 +28,10 @@ def retrieve_user_id(userId: str) -> User:
     with Session(engine) as session:
         try:
             user = session.scalar(select(User).where(User.id == userId))
-            print(user)
         except Exception as e:
             print("Something went wrong: ", str(e))
             raise
+
+
+retrieve_users()
+retrieve_user_id(6)
