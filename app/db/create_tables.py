@@ -4,8 +4,11 @@ from app.models.expense import Expense
 
 
 def create_tables():
-    Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created successfully!")
+    try:
+        Base.metadata.create_all(bind=engine)
+        print("[SUCCESS] Database tables created successfully!")
+    except Exception as e:
+        print("[ERROR] Something went wrong:", str(e))
 
 
 if __name__ == "__main__":
