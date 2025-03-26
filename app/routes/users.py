@@ -1,3 +1,5 @@
+"""Establish endpoints for interacting with users"""
+
 from fastapi import APIRouter
 
 router = APIRouter()

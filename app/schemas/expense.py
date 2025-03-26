@@ -1,9 +1,13 @@
+"""Pydantic schemas for data validation"""
+
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field
 
 
 class ExpenseCategory(Enum):
+    """Possible categories for expenses"""
+
     GROCERIES = "GROCERIES"
     HEALTH = "HEALTH"
     HOUSING = "HOUSING"
@@ -51,4 +55,10 @@ class ExpenseResponse(ExpenseBase):
     user_id: int
 
     class Config:
+        """Configuration for response serialization.
+
+        The from_attributes=True setting allows the model to read data from
+        SQLAlchemy ORM models, converting model attributes to schema fields.
+        """
+
         from_attributes = True

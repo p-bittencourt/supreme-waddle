@@ -1,3 +1,5 @@
+"""Establish endpoints for interacting with expenses"""
+
 from fastapi import APIRouter, HTTPException
 from app.schemas.expense import ExpenseCategory, ExpenseResponse, ExpenseUpdate
 
