@@ -23,11 +23,11 @@ def retrieve_expenses() -> List[Expense]:
             raise
 
 
-def retrieve_expense_id(expenseId: str) -> Expense:
+def retrieve_expense_id(expense_id: str) -> Expense:
     """Retrieves expense by id"""
     with Session(engine) as session:
         try:
-            expense = session.scalar(select(Expense).where(Expense.id == expenseId))
+            expense = session.scalar(select(Expense).where(Expense.id == expense_id))
             return expense
         except Exception as e:
             print("Something went wrong: ", str(e))

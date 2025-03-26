@@ -23,11 +23,12 @@ def retrieve_users() -> List[User]:
             raise
 
 
-def retrieve_user_id(userId: str) -> User:
+def retrieve_user_id(user_id: str) -> User:
     """Retrieves user by id"""
     with Session(engine) as session:
         try:
-            user = session.scalar(select(User).where(User.id == userId))
+            user = session.scalar(select(User).where(User.id == user_id))
+            return user
         except Exception as e:
             print("Something went wrong: ", str(e))
             raise
