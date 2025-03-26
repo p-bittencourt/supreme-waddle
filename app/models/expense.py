@@ -23,3 +23,6 @@ class Expense(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
     user: Mapped["User"] = relationship(back_populates="expenses")
+
+    def __repr__(self) -> str:
+        return f"Expense(id={self.id}, title='{self.title}', category='{self.category}', value='{self.value}')"
