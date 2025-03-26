@@ -1,3 +1,5 @@
+"""Define the Models for SQLAlchemy"""
+
 from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey, Enum
 from sqlalchemy.orm import relationship
