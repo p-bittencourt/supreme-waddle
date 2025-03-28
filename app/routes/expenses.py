@@ -12,14 +12,17 @@ router = APIRouter(
 
 @router.get("/", response_model=list[ExpenseResponse], tags=["expenses"])
 async def read_expenses():
+    """Retrieve all expenses."""
     return retrieve_expenses()
 
 
 @router.get("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
 async def read_expense_id(expense_id: str):
+    """Retrieve a specific expense by its ID."""
     return retrieve_expense_id(expense_id)
 
 
 @router.put("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
 async def update_expense(expense_id: str, expense_update: ExpenseUpdate):
+    """Update an expense by its ID."""
     pass

@@ -8,7 +8,7 @@ from app.db.database import engine
 
 # Add imports to ensure both models are fully loaded before SQLAlchemy tries to map the relationships
 from app.models.user import User
-from app.models.expense import Expense
+from app.models.expense import Expense  # pylint: disable=unused-import
 
 
 def retrieve_users() -> List[User]:
