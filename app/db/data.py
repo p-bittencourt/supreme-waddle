@@ -1,3 +1,5 @@
+"""Sample data to be used for populating db"""
+
 from app.schemas.expense import ExpenseCategory
 
 
