@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.repositories.user import *
+from app.repositories.user import retrieve_users, retrieve_user_id
 from app.db.database import DbSession
 
 router = APIRouter()

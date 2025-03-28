@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from app.schemas.expense import ExpenseResponse, ExpenseUpdate
 
-from app.repositories.expense import *
+from app.repositories.expense import retrieve_expenses, retrieve_expense_id
 from app.db.database import DbSession
 
 router = APIRouter(

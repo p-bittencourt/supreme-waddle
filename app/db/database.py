@@ -27,6 +27,7 @@ SessionLocal = sessionmaker(engine)
 
 
 def get_db():
+    """Instantiates the session and yield it as a dependency"""
     db = SessionLocal()
     try:
         yield db
