@@ -1,9 +1,13 @@
 """Creating the db engine"""
 
 import os
+from typing import Annotated
 from dotenv import load_dotenv
+from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 
 load_dotenv()
 
@@ -18,6 +22,19 @@ DB_NAME = os.getenv("DB_NAME")
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@" f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 engine = create_engine(DATABASE_URL)
+
+SessionLocal = sessionmaker(engine)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+DbSession = Annotated[Session, Depends(get_db)]
 
 
 class Base(DeclarativeBase):
