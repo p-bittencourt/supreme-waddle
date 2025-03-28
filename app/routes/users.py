@@ -2,26 +2,19 @@
 
 from fastapi import APIRouter
 
-from app.repositories.user import *
+from app.repositories.user import retrieve_users, retrieve_user_id
+from app.db.database import DbSession
 
 router = APIRouter()
 
 
 @router.get("/users/", tags=["users"])
-async def read_users():
-    return retrieve_users()
+async def read_users(db: DbSession):
+    """Retrives all users."""
+    return retrieve_users(db)
 
 
 @router.get("/users/{user_id}", tags=["users"])
-async def read_user_id(user_id):
-    return retrieve_user_id(user_id)
-
-
-@router.get("/users/me", tags=["users"])
-async def read_user_me():
-    return {"username": "fakeCurrentUser"}
-
-
-@router.get("/users/{username}", tags=["users"])
-async def read_user(username: str):
-    return {"username": username}
+async def read_user_id(db: DbSession, user_id):
+    """Retrieves user by ID."""
+    return retrieve_user_id(db, user_id)

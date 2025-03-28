@@ -1,3 +1,9 @@
+"""
+Main application module for the Expense Tracker API.
+This module initializes the FastAPI application, sets up routers,
+and defines the root endpoints.
+"""
+
 from fastapi import APIRouter, FastAPI
 from fastapi.responses import RedirectResponse
 from app.routes import users, expenses
@@ -13,6 +19,7 @@ api_router = APIRouter(prefix="/api")
 
 @api_router.get("/", tags=["api"])
 def api_root():
+    """Root endpoint for the API."""
     return {
         "message": "Welcome to PB's Expense Tracker API",
         "available_routes": ["/api/users", "/api/expenses"],
@@ -28,4 +35,5 @@ app.include_router(api_router)
 
 @app.get("/")
 def root():
+    """Root endpoint that redirects to the API documentation"""
     return RedirectResponse(url="/docs")

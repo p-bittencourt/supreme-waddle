@@ -4,35 +4,18 @@ from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.database import engine
-from app.models.user import User
-
 # Add imports to ensure both models are fully loaded before SQLAlchemy tries to map the relationships
-from app.models.user import User
+from app.models.user import User  # pylint: disable=unused-import
 from app.models.expense import Expense
 
 
-def retrieve_expenses() -> List[Expense]:
+def retrieve_expenses(db: Session) -> List[Expense]:
     """Retrieves all users from the db"""
-    with Session(engine) as session:
-        try:
-            expenses = session.scalars(select(Expense)).all()
-            return expenses
-        except Exception as e:
-            print("Something went wrong: ", str(e))
-            raise
+    expenses = db.scalars(select(Expense)).all()
+    return expenses
 
 
-def retrieve_expense_id(expense_id: str) -> Expense:
+def retrieve_expense_id(db: Session, expense_id: str) -> Expense:
     """Retrieves expense by id"""
-    with Session(engine) as session:
-        try:
-            expense = session.scalar(select(Expense).where(Expense.id == expense_id))
-            return expense
-        except Exception as e:
-            print("Something went wrong: ", str(e))
-            raise
-
-
-retrieve_expenses()
-retrieve_expense_id(10)
+    expense = db.scalar(select(Expense).where(Expense.id == expense_id))
+    return expense
