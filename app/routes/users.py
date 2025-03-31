@@ -10,24 +10,24 @@ from app.repositories.user import (
     delete_user,
 )
 from app.db.database import DbSession
-from app.schemas.user import UserCreate, UserUpdate
+from app.schemas.user import UserCreate, UserResponse, UserUpdate
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get("/users/", tags=["users"])
+@router.get("/", response_model=list[UserResponse])
 async def read_users(db: DbSession):
     """Retrives all users."""
     return get_users(db)
 
 
-@router.get("/users/{user_id}", tags=["users"])
+@router.get("/{user_id}", response_model=UserResponse)
 async def read_user_id(db: DbSession, user_id: str):
     """Retrieves user by ID."""
     return get_user_id(db, user_id)
 
 
-@router.post("/users", tags=["users"])
+@router.post("/", response_model=UserResponse)
 async def create_new_user(db: DbSession, user_data: UserCreate):
     """Creates a user"""
     try:
@@ -36,7 +36,7 @@ async def create_new_user(db: DbSession, user_data: UserCreate):
         print(f"Exception: {e}")
 
 
-@router.patch("/users/{user_id}", tags=["users"])
+@router.patch("/{user_id}", response_model=UserResponse)
 async def update_user_info(db: DbSession, user_id: str, user_data: UserUpdate):
     """Updates a user"""
     try:
@@ -45,7 +45,7 @@ async def update_user_info(db: DbSession, user_id: str, user_data: UserUpdate):
         print(f"Exception: {e}")
 
 
-@router.delete("/users/{user_id}", tags=["users"])
+@router.delete("/{user_id}")
 async def delete_user_data(db: DbSession, user_id: str):
     """Deletes a user"""
     try:
