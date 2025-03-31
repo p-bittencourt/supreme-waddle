@@ -14,8 +14,6 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     """Used when creating a new user (no ID yet)"""
 
-    id: int
-
 
 class UserUpdate(BaseModel):
     """Used when updating an user (all fields optional)"""
