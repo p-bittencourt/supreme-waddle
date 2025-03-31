@@ -36,6 +36,11 @@ def update_user(db: Session, user_id: str, user_data: UserUpdate) -> User:
     # Get only fields that are provided
     update_data = {k: v for k, v in user_data.model_dump().items() if v is not None}
 
+    # If no update data provided
+    if not update_data:
+        # implement custom error
+        pass
+
     # Query and update on db
     db.query(User).filter(User.id == user_id).update(update_data)
     db.commit()
@@ -43,3 +48,9 @@ def update_user(db: Session, user_id: str, user_data: UserUpdate) -> User:
     # Retrieve updated user
     updated_user = db.query(User).filter(User.id == user_id).first()
     return updated_user
+
+
+def delete_user(db: Session, user_id: str) -> None:
+    """Deletes user data"""
+    db.query(User).filter(User.id == user_id).delete()
+    db.commit()
