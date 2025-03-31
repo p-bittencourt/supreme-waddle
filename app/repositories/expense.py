@@ -40,7 +40,7 @@ def update_expense(
 
     # If no update data provided
     if not update_data:
-        # TODO: implement custom error
+        # TODO: implement custom error # pylint: disable=W0511
         pass
 
     # Query to update on db
