@@ -1,9 +1,15 @@
 """Establish endpoints for interacting with expenses"""
 
 from fastapi import APIRouter
-from app.schemas.expense import ExpenseResponse, ExpenseUpdate
+from app.schemas.expense import ExpenseCreate, ExpenseResponse, ExpenseUpdate
 
-from app.repositories.expense import get_expenses, get_expense_id
+from app.repositories.expense import (
+    get_expenses,
+    get_expense_id,
+    update_expense,
+    add_expense,
+    delete_expense,
+)
 from app.db.database import DbSession
 
 router = APIRouter(
@@ -11,19 +17,42 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=list[ExpenseResponse], tags=["expenses"])
+@router.get("/", response_model=list[ExpenseResponse])
 async def read_expenses(db: DbSession):
     """Retrieve all expenses."""
     return get_expenses(db)
 
 
-@router.get("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
+@router.get("/{expense_id}", response_model=ExpenseResponse)
 async def read_expense_id(db: DbSession, expense_id: str):
     """Retrieve a specific expense by its ID."""
     return get_expense_id(db, expense_id)
 
 
-@router.put("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
-async def update_expense(db: DbSession, expense_id: str, expense_update: ExpenseUpdate):
+@router.patch("/{expense_id}", response_model=ExpenseResponse)
+async def update_expense_info(
+    db: DbSession, expense_id: str, expense_data: ExpenseUpdate
+):
     """Update an expense by its ID."""
-    pass
+    try:
+        return update_expense(db, expense_id, expense_data)
+    except Exception as e:
+        print(f"Exception: {e}")
+
+
+@router.post("/", response_model=ExpenseResponse)
+async def create_expense(db: DbSession, expense_data: ExpenseCreate):
+    """Creates an expense"""
+    try:
+        return add_expense(db, expense_data)
+    except Exception as e:
+        print(f"Exception: {e}")
+
+
+@router.delete("/{expense_id}")
+async def delete_expense_data(db: DbSession, expense_id: str):
+    """Deletes an expense"""
+    try:
+        return delete_expense(db, expense_id)
+    except Exception as e:
+        print(f"Exception: {e}")

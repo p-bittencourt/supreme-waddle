@@ -38,19 +38,20 @@ def update_user(db: Session, user_id: str, user_data: UserUpdate) -> User:
 
     # If no update data provided
     if not update_data:
-        # implement custom error
+        # TODO: implement custom error
         pass
 
-    # Query and update on db
+    # Query to update on db
     db.query(User).filter(User.id == user_id).update(update_data)
     db.commit()
 
     # Retrieve updated user
-    updated_user = db.query(User).filter(User.id == user_id).first()
+    updated_user = get_user_id(db, user_id)
     return updated_user
 
 
 def delete_user(db: Session, user_id: str) -> None:
     """Deletes user data"""
-    db.query(User).filter(User.id == user_id).delete()
+    user = get_user_id(db, user_id)
+    db.delete(user)
     db.commit()

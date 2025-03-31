@@ -31,8 +31,7 @@ async def read_user_id(db: DbSession, user_id: str):
 async def create_new_user(db: DbSession, user_data: UserCreate):
     """Creates a user"""
     try:
-        validated_model = UserCreate.model_validate(user_data)
-        return create_user(db, validated_model)
+        return create_user(db, user_data)
     except Exception as e:
         print(f"Exception: {e}")
 
