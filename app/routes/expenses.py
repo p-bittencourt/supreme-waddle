@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from app.schemas.expense import ExpenseResponse, ExpenseUpdate
 
-from app.repositories.expense import retrieve_expenses, retrieve_expense_id
+from app.repositories.expense import get_expenses, get_expense_id
 from app.db.database import DbSession
 
 router = APIRouter(
@@ -14,13 +14,13 @@ router = APIRouter(
 @router.get("/", response_model=list[ExpenseResponse], tags=["expenses"])
 async def read_expenses(db: DbSession):
     """Retrieve all expenses."""
-    return retrieve_expenses(db)
+    return get_expenses(db)
 
 
 @router.get("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
 async def read_expense_id(db: DbSession, expense_id: str):
     """Retrieve a specific expense by its ID."""
-    return retrieve_expense_id(db, expense_id)
+    return get_expense_id(db, expense_id)
 
 
 @router.put("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])

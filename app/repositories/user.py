@@ -9,13 +9,13 @@ from app.models.user import User
 from app.models.expense import Expense  # pylint: disable=unused-import
 
 
-def retrieve_users(db: Session) -> List[User]:
+def get_users(db: Session) -> List[User]:
     """Retrieves all users from the db"""
     users = db.scalars(select(User)).all()
     return users
 
 
-def retrieve_user_id(db: Session, user_id: str) -> User:
+def get_user_id(db: Session, user_id: str) -> User:
     """Retrieves user by id"""
     user = db.scalar(select(User).where(User.id == user_id))
     return user
