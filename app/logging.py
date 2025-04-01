@@ -11,10 +11,11 @@ LOG_FORMAT = "%(message)s"
 class LogLevels(StrEnum):
     """LogLevels enum"""
 
+    debug = "DEBUG"
     info = "INFO"
     warn = "WARN"
     error = "ERROR"
-    debug = "DEBUG"
+    critical = "CRITICAL"
 
 
 def configure_logging(log_level: str = LogLevels.error):

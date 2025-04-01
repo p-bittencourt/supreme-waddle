@@ -14,11 +14,30 @@ from app.schemas.expense import ExpenseCreate, ExpenseUpdate
 logger = logging.getLogger(__name__)
 
 
-def get_expenses(db: Session) -> List[Expense]:
-    """Retrieves all expenses from the db"""
-    expenses = db.scalars(select(Expense)).all()
-    logger.info("Retrieved %d expenses.", len(expenses))
-    return expenses
+def get_filtered_expenses(
+    db: Session, user_id: str = None, category: str = None
+) -> List[Expense]:
+    """Retrives expenses with optional filtering by user_id and category"""
+    try:
+        query = db.query(Expense)
+
+        if user_id:
+            query = query.where(Expense.user_id == user_id)
+
+        if category:
+            query = query.where(Expense.category == category)
+
+        expenses = query.all()
+        logger.info(
+            "Retrieved %d expenses with filters: user_id=%s, category=%s",
+            len(expenses),
+            user_id,
+            category,
+        )
+        return expenses
+    except Exception as e:
+        logger.error("Something went wrong: %s", str(e))
+        raise BadRequest("Expense") from e
 
 
 def get_expense_id(db: Session, expense_id: str) -> Expense:
