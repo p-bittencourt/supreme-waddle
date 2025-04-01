@@ -48,6 +48,9 @@ def create_user(db: Session, user_data: UserCreate) -> User:
 
 def update_user(db: Session, user_id: str, user_data: UserUpdate) -> User:
     """Updates user info"""
+    # Check if user exists
+    user = get_user_id(db, user_id)
+
     # Get only fields that are provided
     update_data = {k: v for k, v in user_data.model_dump().items() if v is not None}
 
@@ -60,10 +63,10 @@ def update_user(db: Session, user_id: str, user_data: UserUpdate) -> User:
     db.query(User).filter(User.id == user_id).update(update_data)
     db.commit()
 
-    # Retrieve updated user
-    updated_user = get_user_id(db, user_id)
-    logger.info("Updated User %s, #%s", updated_user.name, user_id)
-    return updated_user
+    # Refresh the user object
+    db.refresh(user)
+    logger.info("Updated User %s, #%s", user.name, user_id)
+    return user
 
 
 def delete_user(db: Session, user_id: str) -> None:

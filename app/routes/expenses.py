@@ -34,25 +34,16 @@ async def update_expense_info(
     db: DbSession, expense_id: str, expense_data: ExpenseUpdate
 ):
     """Update an expense by its ID."""
-    try:
-        return update_expense(db, expense_id, expense_data)
-    except Exception as e:
-        print(f"Exception: {e}")
+    return update_expense(db, expense_id, expense_data)
 
 
 @router.post("/", response_model=ExpenseResponse)
 async def create_expense(db: DbSession, expense_data: ExpenseCreate):
     """Creates an expense"""
-    try:
-        return add_expense(db, expense_data)
-    except Exception as e:
-        print(f"Exception: {e}")
+    return add_expense(db, expense_data)
 
 
 @router.delete("/{expense_id}")
 async def delete_expense_data(db: DbSession, expense_id: str):
     """Deletes an expense"""
-    try:
-        return delete_expense(db, expense_id)
-    except Exception as e:
-        print(f"Exception: {e}")
+    return delete_expense(db, expense_id)
