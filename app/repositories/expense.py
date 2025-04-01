@@ -37,7 +37,7 @@ def get_filtered_expenses(
         return expenses
     except Exception as e:
         logger.error("Something went wrong: %s", str(e))
-        raise BadRequest("Expense")
+        raise BadRequest("Expense") from e
 
 
 def get_expense_id(db: Session, expense_id: str) -> Expense:
