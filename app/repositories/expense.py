@@ -14,6 +14,13 @@ from app.schemas.expense import ExpenseCreate, ExpenseUpdate
 logger = logging.getLogger(__name__)
 
 
+def get_user_expenses(db: Session, user_id: str) -> List[Expense]:
+    """Retrieves all expenses from a single user"""
+    expenses = db.query(Expense).where(Expense.user_id == user_id).all()
+    logger.info("Retrieved %d expenses.", len(expenses))
+    return expenses
+
+
 def get_expenses(db: Session) -> List[Expense]:
     """Retrieves all expenses from the db"""
     expenses = db.scalars(select(Expense)).all()

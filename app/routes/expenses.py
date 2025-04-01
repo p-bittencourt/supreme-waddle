@@ -9,6 +9,7 @@ from app.repositories.expense import (
     update_expense,
     add_expense,
     delete_expense,
+    get_user_expenses,
 )
 from app.db.database import DbSession
 
@@ -18,8 +19,10 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[ExpenseResponse])
-async def read_expenses(db: DbSession):
+async def read_expenses(db: DbSession, user_id: str = None):
     """Retrieve all expenses."""
+    if user_id:
+        return get_user_expenses(db, user_id)
     return get_expenses(db)
 
 
