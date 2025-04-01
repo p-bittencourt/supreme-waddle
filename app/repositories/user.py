@@ -1,15 +1,16 @@
 """Handles interacting with the users table on the database"""
 
+import logging
 from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
 
 # Add imports to ensure both models are fully loaded before SQLAlchemy tries to map the relationships
 from app.models.user import User
 from app.models.expense import Expense  # pylint: disable=unused-import
 from app.schemas.user import UserCreate, UserUpdate
 from app.exceptions import BadRequest, NotFound
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,7 @@ def create_user(db: Session, user_data: UserCreate) -> User:
         return new_user
     except Exception as e:
         logger.error("Failed to create user. Error: %s", str(e))
-        raise BadRequest("User")
+        raise BadRequest("User") from e
 
 
 def update_user(db: Session, user_id: str, user_data: UserUpdate) -> User:
