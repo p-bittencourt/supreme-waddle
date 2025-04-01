@@ -10,7 +10,7 @@ from app.routes import users, expenses
 from .logging import configure_logging, LogLevels
 
 
-configure_logging(LogLevels.debug)
+configure_logging(LogLevels.error)
 
 app = FastAPI(
     title="Expense Tracker API",

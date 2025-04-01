@@ -4,12 +4,11 @@ from fastapi import APIRouter
 from app.schemas.expense import ExpenseCreate, ExpenseResponse, ExpenseUpdate
 
 from app.repositories.expense import (
-    get_expenses,
+    get_filtered_expenses,
     get_expense_id,
     update_expense,
     add_expense,
     delete_expense,
-    get_user_expenses,
 )
 from app.db.database import DbSession
 
@@ -19,11 +18,16 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[ExpenseResponse])
-async def read_expenses(db: DbSession, user_id: str = None):
-    """Retrieve all expenses."""
-    if user_id:
-        return get_user_expenses(db, user_id)
-    return get_expenses(db)
+async def read_expenses(db: DbSession, user_id: str = None, filter: str = None):
+    """
+    Retrieve expenses with optional filtering.
+
+    - Filter by user_id
+    - Filter by expense category
+    - Filter by both
+    - Or get all expenses with no filters
+    """
+    return get_filtered_expenses(db, user_id, filter)
 
 
 @router.get("/{expense_id}", response_model=ExpenseResponse)
