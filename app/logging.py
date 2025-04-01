@@ -1,7 +1,7 @@
 """App level logger"""
 
 import logging
-from enum import StrEnum
+from enum import StrEnum  # pylint disable=no-name-in-module
 from rich.logging import RichHandler
 
 
