@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_filtered_expenses(
-    db: Session, user_id: str = None, filter: str = None
+    db: Session, user_id: str = None, category: str = None
 ) -> List[Expense]:
     """Retrives expenses with optional filtering by user_id and category"""
     query = db.query(Expense)
@@ -23,15 +23,15 @@ def get_filtered_expenses(
     if user_id:
         query = query.where(Expense.user_id == user_id)
 
-    if filter:
-        query = query.where(Expense.category == filter)
+    if category:
+        query = query.where(Expense.category == category)
 
     expenses = query.all()
     logger.info(
-        "Retrieved %d expenses with filters: user_id=%s, filter=%s",
+        "Retrieved %d expenses with filters: user_id=%s, category=%s",
         len(expenses),
         user_id,
-        filter,
+        category,
     )
     return expenses
 

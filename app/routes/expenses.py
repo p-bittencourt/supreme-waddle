@@ -18,7 +18,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[ExpenseResponse])
-async def read_expenses(db: DbSession, user_id: str = None, filter: str = None):
+async def read_expenses(db: DbSession, user_id: str = None, category: str = None):
     """
     Retrieve expenses with optional filtering.
 
@@ -27,7 +27,7 @@ async def read_expenses(db: DbSession, user_id: str = None, filter: str = None):
     - Filter by both
     - Or get all expenses with no filters
     """
-    return get_filtered_expenses(db, user_id, filter)
+    return get_filtered_expenses(db, user_id, category)
 
 
 @router.get("/{expense_id}", response_model=ExpenseResponse)
