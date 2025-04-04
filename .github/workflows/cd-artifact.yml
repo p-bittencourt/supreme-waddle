@@ -1,0 +1,15 @@
+name: CD Artifacts
+on:
+  pull_request:
+    branches: -main
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    steps:
+      - run: mkdir -p artifact/
+      - run: echo hello > artifact/world.txt
+      - uses: actions/upload-artifact@v4
+    with:
+      name: my-artifact
+      path: artifact/world.txt

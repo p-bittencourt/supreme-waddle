@@ -1,29 +1,50 @@
 """Establish endpoints for interacting with expenses"""
 
 from fastapi import APIRouter
-from app.schemas.expense import ExpenseResponse, ExpenseUpdate
 
-from app.repositories.expense import retrieve_expenses, retrieve_expense_id
 from app.db.database import DbSession
+from app.schemas.expense import ExpenseCreate, ExpenseResponse, ExpenseUpdate
+import app.repositories.expense as expense_repository
 
 router = APIRouter(
     prefix="/expenses", tags=["expenses"], responses={404: {"description": "Not found"}}
 )
 
 
-@router.get("/", response_model=list[ExpenseResponse], tags=["expenses"])
-async def read_expenses(db: DbSession):
-    """Retrieve all expenses."""
-    return retrieve_expenses(db)
+@router.get("/", response_model=list[ExpenseResponse])
+async def read_expenses(db: DbSession, user_id: str = None, category: str = None):
+    """
+    Retrieve expenses with optional filtering.
+
+    - Filter by user_id
+    - Filter by expense category
+    - Filter by both
+    - Or get all expenses with no filters
+    """
+    return expense_repository.get_filtered_expenses(db, user_id, category)
 
 
-@router.get("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
+@router.get("/{expense_id}", response_model=ExpenseResponse)
 async def read_expense_id(db: DbSession, expense_id: str):
     """Retrieve a specific expense by its ID."""
-    return retrieve_expense_id(db, expense_id)
+    return expense_repository.get_expense_id(db, expense_id)
 
 
-@router.put("/{expense_id}", response_model=ExpenseResponse, tags=["expenses"])
-async def update_expense(db: DbSession, expense_id: str, expense_update: ExpenseUpdate):
+@router.patch("/{expense_id}", response_model=ExpenseResponse)
+async def update_expense_info(
+    db: DbSession, expense_id: str, expense_data: ExpenseUpdate
+):
     """Update an expense by its ID."""
-    pass
+    return expense_repository.update_expense(db, expense_id, expense_data)
+
+
+@router.post("/", response_model=ExpenseResponse)
+async def create_expense(db: DbSession, expense_data: ExpenseCreate):
+    """Creates an expense"""
+    return expense_repository.add_expense(db, expense_data)
+
+
+@router.delete("/{expense_id}")
+async def delete_expense_data(db: DbSession, expense_id: str):
+    """Deletes an expense"""
+    return expense_repository.delete_expense(db, expense_id)

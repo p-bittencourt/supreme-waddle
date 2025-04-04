@@ -14,14 +14,12 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     """Used when creating a new user (no ID yet)"""
 
-    id: int
-
 
 class UserUpdate(BaseModel):
     """Used when updating an user (all fields optional)"""
 
-    name: str = Field(None, min_length=1)
-    email: Optional[EmailStr]
+    name: Optional[str] = Field(None, min_length=1)
+    email: Optional[EmailStr] = None
 
 
 class UserResponse(UserBase):
