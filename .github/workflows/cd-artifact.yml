@@ -1,6 +1,6 @@
 name: CD Artifacts
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -9,9 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Simulando CD
-      - run: mkdir -p path/to/artifact
-      - run: echo hello > path/to/artifact/world.txt
-      - uses: actions/upload-artifact@v4
+        run: mkdir -p artifact
+          echo hello > artifact/world.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: my-artifact
-          path: path/to/artifact/world.txt
+          path: artifact/world.txt
