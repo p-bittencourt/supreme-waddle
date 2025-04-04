@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Simulando CD
         run: mkdir -p artifact
-          echo hello > artifact/world.txt
+        run: echo hello > artifact/world.txt
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
