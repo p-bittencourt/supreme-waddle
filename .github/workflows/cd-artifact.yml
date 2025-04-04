@@ -3,14 +3,15 @@ on:
   push:
     branches:
       - main
-# jobs:
-# deliver:
-#   runs-on: ubuntu-latest
-#   steps:
-#     - name: Simulando CD
-#       run: |
-#         mkdir -p artifact
-#         echo hello > artifact/world.txt
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulando CD
+        run: |
+          mkdir -p artifact
+          echo hello > artifact/world.txt
 
 #     - name: Upload artifact
 #       uses: actions/upload-artifact@v4
