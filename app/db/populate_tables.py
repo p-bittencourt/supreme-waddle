@@ -35,5 +35,6 @@ def populate_expenses():
             session.commit()
 
 
-# populate_users()
-# populate_expenses()
+if __name__ == "__main__":
+    populate_users()
+    populate_expenses()
