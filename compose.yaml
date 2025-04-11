@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    volumes:
+      - ./:/usr/src/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80 --reload
+
+  db:
+    image: postgres:17
+    container_name: expense-tracker-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 5431:5432
+    volumes:
+      - cd-db:/var/lib/postgresql/data
+
+volumes:
+  cd-db:
+    external: true
