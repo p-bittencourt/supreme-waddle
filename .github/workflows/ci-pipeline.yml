@@ -32,11 +32,3 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           template: 'simple-link'
           include-extras: true
-      - name: Debug
-        run: |
-          echo "Checking webhook configuration..."
-          if [ -n "${{ secrets.DISCORD_WEBHOOK }}" ]; then
-            echo "Webhook secret exists"
-          else
-            echo "Webhook secret is empty or not available"
-          fi
