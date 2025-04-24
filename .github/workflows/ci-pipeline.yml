@@ -1,6 +1,6 @@
 name: CI Workflow
 
-on: [pull_request]
+on: [push]
 
 jobs:
   pylint:
@@ -25,10 +25,18 @@ jobs:
   discord:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Discord Commits
         uses: Sniddl/discord-commits@v1.6
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           template: 'simple-link'
           include-extras: true
+      - name: Debug
+        run: |
+          echo "Checking webhook configuration..."
+          if [ -n "${{ secrets.DISCORD_WEBHOOK }}" ]; then
+            echo "Webhook secret exists"
+          else
+            echo "Webhook secret is empty or not available"
+          fi
