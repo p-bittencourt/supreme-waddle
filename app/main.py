@@ -25,7 +25,7 @@ api_router = APIRouter(prefix="/api")
 def api_root():
     """Root endpoint for the API."""
     return {
-        "message": "Welcome to PB's Expense Tracker API",
+        "message": "Welcome to PB's Expense Tracker API - DevOps PUCPR",
         "available_routes": ["/api/users", "/api/expenses"],
     }
 
