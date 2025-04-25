@@ -37,9 +37,7 @@ def create_test_database():
     db_name = Settings.TEST_DB
 
     # Create a connection string to the default postgres database
-    postgres_uri = f"""
-        postgresql://{Settings.DB_USER}:{Settings.DB_PASSWORD}@{Settings.DB_HOST}:{Settings.DB_PORT}/postgres
-    """
+    postgres_uri = f"postgresql://{Settings.DB_USER}:{Settings.DB_PASSWORD}@{Settings.DB_HOST}:{Settings.DB_PORT}/postgres"  # pylint: disable=line-too-long
 
     # Create engine with autocommit=True to allow CREATE DATABASE
     temp_engine = create_engine(postgres_uri, isolation_level="AUTOCOMMIT")
@@ -97,6 +95,12 @@ def set_session_for_factories(db: Session):
     """Attaches the mock session to the factories"""
     UserFactory._meta.sqlalchemy_session = db
     ExpenseFactory._meta.sqlalchemy_session = db
+
+
+@pytest.fixture
+def expense(db: Session) -> Expense:
+    """Create a test expense for use in tests"""
+    return ExpenseFactory()
 
 
 @pytest.fixture(scope="function")
