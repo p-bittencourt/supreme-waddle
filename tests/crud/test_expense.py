@@ -29,5 +29,6 @@ def test_add_expense(db: Session) -> None:
 
 
 def test_get_expense(db: Session, expense: Expense) -> None:
+    """Testes retrieving an expense"""
     stored_expense = get_expense_id(db=db, expense_id=expense.id)
     assert stored_expense

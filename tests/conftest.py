@@ -1,3 +1,4 @@
+# pylint: disable=W0621
 """Conftest file to setup test db"""
 
 import logging
@@ -94,8 +95,8 @@ def db() -> Generator:
 @pytest.fixture(autouse=True)
 def set_session_for_factories(db: Session):
     """Attaches the mock session to the factories"""
-    UserFactory._meta.sqlalchemy_session = db  # pylint: disable=W0621
-    ExpenseFactory._meta.sqlalchemy_session = db  # pylint: disable=W0621
+    UserFactory._meta.sqlalchemy_session = db
+    ExpenseFactory._meta.sqlalchemy_session = db
 
 
 @pytest.fixture(scope="function")
