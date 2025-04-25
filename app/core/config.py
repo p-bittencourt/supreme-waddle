@@ -15,3 +15,8 @@ class Settings:
     DATABASE_URL = (
         f"postgresql://{DB_USER}:{DB_PASSWORD}@" f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
+
+    TEST_DB = DB_NAME + "_test"
+    TEST_DB_URI = (
+        f"postgresql://{DB_USER}:{DB_PASSWORD}@" f"{DB_HOST}:{DB_PORT}/{TEST_DB}"
+    )
