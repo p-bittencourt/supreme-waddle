@@ -7,11 +7,15 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 
 from app.core.config import Settings
 from app.db.database import Base, engine
 from app.models.user import User  # pylint: disable=unused-import
 from app.models.expense import Expense  # pylint: disable=unused-import
+
+from .factories.user import UserFactory
+from .factories.expense import ExpenseFactory
 
 
 # Set up a test Database
@@ -57,3 +61,9 @@ def db() -> Generator:
     session.close()
     transaction.rollback()
     connection.close()
+
+
+@pytest.fixture(autouse=True)
+def set_session_for_factories(db: Session):
+    UserFactory._meta.sqlalchemy_session = db
+    ExpenseFactory._meta.sqlalchemy_session = db
