@@ -1,8 +1,12 @@
-from dotenv import load_dotenv
+"""Manages all environment variables"""
+
 import os
+from dotenv import load_dotenv
 
 
 class Settings:
+    """Import all environment variables into Settings class"""
+
     load_dotenv()
     # Extract database connection parameters from environment variables
     DB_USER = os.getenv("DB_USER")

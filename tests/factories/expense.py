@@ -1,9 +1,13 @@
+"""Factory for Expenses"""
+
 import factory
 from app.models.expense import Expense
 from tests.factories.user import UserFactory
 
 
 class ExpenseFactory(factory.alchemy.SQLAlchemyModelFactory):
+    """Expense factory"""
+
     class Meta:
         model = Expense
         sqlalchemy_session_persistence = "commit"

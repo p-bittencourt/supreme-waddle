@@ -1,8 +1,12 @@
+"""Factory for users"""
+
 import factory
 from app.models.user import User
 
 
 class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
+    """User Factory"""
+
     class Meta:
         model = User  # SQLAlchemy model
         sqlalchemy_session_persistence = (

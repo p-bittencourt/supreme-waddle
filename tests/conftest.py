@@ -10,6 +10,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
 
+# Import dependency that needs to be overridden
+from app.db.database import get_db
 from app.main import app
 from app.core.config import Settings
 from app.db.database import Base, engine
@@ -67,14 +69,14 @@ def db() -> Generator:
 
 @pytest.fixture(autouse=True)
 def set_session_for_factories(db: Session):
+    """Attaches the mock session to the factories"""
     UserFactory._meta.sqlalchemy_session = db
     ExpenseFactory._meta.sqlalchemy_session = db
 
 
 @pytest.fixture(scope="function")
 def client(db: Session) -> Generator[TestClient, None, None]:
-    # Import dependency that needs to be overridden
-    from app.db.database import get_db
+    """Overrides database dependency"""
 
     def override_get_db():
         yield db

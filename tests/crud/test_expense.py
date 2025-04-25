@@ -1,3 +1,5 @@
+"""Test script for Expense crud operations"""
+
 from sqlalchemy.orm import Session
 
 from app.models.expense import ExpenseCategory
@@ -7,6 +9,7 @@ from faker import Faker
 
 
 def test_add_expense(db: Session) -> None:
+    """Tests adding an expense to the db"""
     user_id = Faker().rd_number()
     title = Faker().word
     value = Faker().pricetag()
