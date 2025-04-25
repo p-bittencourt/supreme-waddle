@@ -15,7 +15,3 @@ class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     name = factory.Faker("name")
     email = factory.Faker("email")
-
-    @classmethod
-    def _create(cls, model_class):
-        return super()._create(model_class)

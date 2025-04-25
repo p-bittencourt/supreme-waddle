@@ -32,11 +32,33 @@ logger = logging.getLogger(__name__)
 
 def create_test_database():
     """Create the test database if it doesn't exist"""
-    with engine.connect() as connection:
-        try:
-            connection.execute(text(f"CREATE DATABASE {TEST_DB_URI.split('/')[-1]}"))
-        except Exception as e:
-            logger.error("Issue creating db %s", str(e))
+    # Get the database name from the TEST_DB_URI
+    db_name = Settings.TEST_DB
+
+    # Create a connection string to the default postgres database
+    postgres_uri = f"postgresql://{Settings.DB_USER}:{Settings.DB_PASSWORD}@{Settings.DB_HOST}:{Settings.DB_PORT}/postgres"
+
+    # Create engine with autocommit=True to allow CREATE DATABASE
+    temp_engine = create_engine(postgres_uri, isolation_level="AUTOCOMMIT")
+
+    try:
+        # Connect to the postgres database
+        with temp_engine.connect() as connection:
+            # Check if our test database already exists
+            result = connection.execute(
+                text(f"SELECT 1 FROM pg_database WHERE datname = '{db_name}'")
+            )
+
+            if not result.scalar():
+                # Create the test database if it doesn't exist
+                logger.info(f"Creating test database: {db_name}")
+                connection.execute(text(f'CREATE DATABASE "{db_name}"'))
+                logger.info(f"Test database {db_name} created successfully")
+            else:
+                logger.info(f"Test database {db_name} already exists")
+    except Exception as e:
+        logger.error(f"Error creating test database: {str(e)}")
+        raise
 
 
 @pytest.fixture(scope="session", autouse=True)
