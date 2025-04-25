@@ -24,13 +24,33 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
+    env:
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
-        # This is the version of the action for setting up Python, not the Python version.
         uses: actions/setup-python@v5
         with:
-          # Semantic version range syntax or exact version of a Python version
           python-version: '3.11'
       - name: Install dependencies
         run: |
@@ -39,7 +59,7 @@ jobs:
       - name: Test with pytest
         run: |
           pip install pytest 
-          pytest tests.py --doctest-modules
+          pytest tests/ --doctest-modules
 
   # discord webhook only works on push
   # discord:
