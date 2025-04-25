@@ -1,28 +1,16 @@
 """Creating the db engine"""
 
-import os
 from typing import Annotated
-from dotenv import load_dotenv
 from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 
-load_dotenv()
+from app.core.config import Settings
 
-# Extract database connection parameters from environment variables
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-DB_NAME = os.getenv("DB_NAME")
 
-# Construct the database URL
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@" f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
-print(DATABASE_URL)
-
-engine = create_engine(DATABASE_URL)
+engine = create_engine(Settings.DATABASE_URL)
 
 SessionLocal = sessionmaker(engine)
 
