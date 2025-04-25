@@ -1,6 +1,5 @@
 """Test script for Expense crud operations"""
 
-import pytest
 from sqlalchemy.orm import Session
 
 from app.models.expense import Expense, ExpenseCategory

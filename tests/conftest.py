@@ -59,7 +59,7 @@ def create_test_database():
             else:
                 logger.info("Test database %s already exists", db_name)
     except Exception as e:
-        logger.error(f"Error creating test database: {str(e)}")
+        logger.error("Error creating test database: %s", str(e))
         raise
 
 
@@ -94,8 +94,8 @@ def db() -> Generator:
 @pytest.fixture(autouse=True)
 def set_session_for_factories(db: Session):
     """Attaches the mock session to the factories"""
-    UserFactory._meta.sqlalchemy_session = db  # pylint: disable=redefined-outer-name
-    ExpenseFactory._meta.sqlalchemy_session = db  # pylint: disable=redefined-outer-name
+    UserFactory._meta.sqlalchemy_session = db  # pylint: disable=W0621
+    ExpenseFactory._meta.sqlalchemy_session = db  # pylint: disable=W0621
 
 
 @pytest.fixture(scope="function")
