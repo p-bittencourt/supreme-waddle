@@ -28,7 +28,7 @@ jobs:
       DB_NAME: ${{ secrets.DB_NAME }}
       DB_USER: ${{ secrets.DB_USER }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_HOST: localhost
       DB_PORT: ${{ secrets.DB_PORT }}
 
     services:
@@ -58,9 +58,14 @@ jobs:
           pip install -r requirements.txt
       - name: Test with pytest
         run: |
-          pip install pytest 
-          pytest tests/ --doctest-modules
-
+          pip install pytest pytest-cov 
+          # Print environment info for debugging
+          echo "Database connection info:"
+          echo "Host: $DB_HOST" 
+          echo "Port: $DB_PORT"
+          echo "Database: $DB_NAME"
+          # Run tests
+          pytest tests/ -v
   # discord webhook only works on push
   # discord:
   #   runs-on: ubuntu-latest
