@@ -11,6 +11,8 @@ class ExpenseFactory(factory.alchemy.SQLAlchemyModelFactory):
     """Expense factory"""
 
     class Meta:
+        """Factory meta data"""
+
         model = Expense
         sqlalchemy_session_persistence = "commit"
 

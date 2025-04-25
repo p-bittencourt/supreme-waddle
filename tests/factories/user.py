@@ -8,6 +8,8 @@ class UserFactory(factory.alchemy.SQLAlchemyModelFactory):
     """User Factory"""
 
     class Meta:
+        """Factory meta data"""
+
         model = User  # SQLAlchemy model
         sqlalchemy_session_persistence = (
             "commit"  # Commit the session after creating the user instance

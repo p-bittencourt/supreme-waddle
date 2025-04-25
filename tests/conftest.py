@@ -36,7 +36,9 @@ def create_test_database():
     db_name = Settings.TEST_DB
 
     # Create a connection string to the default postgres database
-    postgres_uri = f"postgresql://{Settings.DB_USER}:{Settings.DB_PASSWORD}@{Settings.DB_HOST}:{Settings.DB_PORT}/postgres"
+    postgres_uri = f"""
+        postgresql://{Settings.DB_USER}:{Settings.DB_PASSWORD}@{Settings.DB_HOST}:{Settings.DB_PORT}/postgres
+    """
 
     # Create engine with autocommit=True to allow CREATE DATABASE
     temp_engine = create_engine(postgres_uri, isolation_level="AUTOCOMMIT")
@@ -51,11 +53,11 @@ def create_test_database():
 
             if not result.scalar():
                 # Create the test database if it doesn't exist
-                logger.info(f"Creating test database: {db_name}")
+                logger.info("Creating test database: %s", db_name)
                 connection.execute(text(f'CREATE DATABASE "{db_name}"'))
-                logger.info(f"Test database {db_name} created successfully")
+                logger.info("Test database %s created successfully", db_name)
             else:
-                logger.info(f"Test database {db_name} already exists")
+                logger.info("Test database %s already exists", db_name)
     except Exception as e:
         logger.error(f"Error creating test database: {str(e)}")
         raise
@@ -92,8 +94,8 @@ def db() -> Generator:
 @pytest.fixture(autouse=True)
 def set_session_for_factories(db: Session):
     """Attaches the mock session to the factories"""
-    UserFactory._meta.sqlalchemy_session = db
-    ExpenseFactory._meta.sqlalchemy_session = db
+    UserFactory._meta.sqlalchemy_session = db  # pylint: disable=redefined-outer-name
+    ExpenseFactory._meta.sqlalchemy_session = db  # pylint: disable=redefined-outer-name
 
 
 @pytest.fixture(scope="function")
