@@ -8,7 +8,9 @@ from sqlalchemy import create_engine
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
+from fastapi.testclient import TestClient
 
+from app.main import app
 from app.core.config import Settings
 from app.db.database import Base, engine
 from app.models.user import User  # pylint: disable=unused-import
@@ -67,3 +69,17 @@ def db() -> Generator:
 def set_session_for_factories(db: Session):
     UserFactory._meta.sqlalchemy_session = db
     ExpenseFactory._meta.sqlalchemy_session = db
+
+
+@pytest.fixture(scope="function")
+def client(db: Session) -> Generator[TestClient, None, None]:
+    # Import dependency that needs to be overridden
+    from app.db.database import get_db
+
+    def override_get_db():
+        yield db
+
+    app.dependency_overrides[get_db] = override_get_db
+    with TestClient(app) as c:
+        yield c
+    app.dependency_overrides.clear()
